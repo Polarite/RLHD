@@ -80,6 +80,7 @@ public class WorldViewContext {
 
 	public CommandBuffer vaoSceneCmd;
 	public CommandBuffer vaoDirectionalCmd;
+	public CommandBuffer vaoMinimapCmd;
 	final DynamicModelVAO[][] dynamicModelVaos = new DynamicModelVAO[FRAMES_IN_FLIGHT][VAO_COUNT];
 
 	public long loadTime;
@@ -109,6 +110,7 @@ public class WorldViewContext {
 
 		vaoSceneCmd = new CommandBuffer("WorldViewScene");
 		vaoDirectionalCmd = new CommandBuffer("WorldViewDirectional");
+		vaoMinimapCmd = new CommandBuffer("WorldViewMinimap");
 
 		for (int x = 0; x < sizeX; ++x)
 			for (int z = 0; z < sizeZ; ++z)
@@ -359,8 +361,11 @@ public class WorldViewContext {
 		}
 
 		for (int x = 0; x < sizeX; ++x)
-			for (int z = 0; z < sizeZ; ++z)
-				zones[x][z].destroy();
+			for (int z = 0; z < sizeZ; ++z) {
+				if (zones[x][z] != null)
+					zones[x][z].destroy();
+				zones[x][z] = null;
+			}
 
 		if (vboM != null)
 			vboM.destroy();

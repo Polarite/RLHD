@@ -103,6 +103,11 @@ public final class JobSystem {
 		active = false;
 		cancelAllWork(workQueue);
 
+		if (workers == null) {
+			threadToWorker.clear();
+			return;
+		}
+
 		for (Worker worker : workers) {
 			cancelAllWork(worker.localWorkQueue);
 			if (worker.handle != null) {
